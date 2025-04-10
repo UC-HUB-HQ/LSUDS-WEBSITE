@@ -1,4 +1,4 @@
-import { databases } from "./config";
+import { client, databases } from "./config";
 import { ID } from "appwrite";
 
 export const db = {};
@@ -12,7 +12,7 @@ const collections = [
   },
   {
     dbId,
-    id: import.meta.env.VITE_COLLECTION_ID_EXECUUTIVES,
+    id: import.meta.env.VITE_COLLECTION_ID_EXECUTIVES,
     name: "executives",
   },
   {
@@ -36,4 +36,13 @@ collections.forEach((col) => {
     //
     get: (id) => databases.getDocument(col.dbId, col.id, id),
   };
+});
+
+
+client.subscribe(`documents`, response => {
+  console.log('Real-time DB event received:', response);
+
+  // Common payload (document data) — use to update IndexedDB
+  const doc = response.payload;
+
 });
