@@ -38,11 +38,25 @@ collections.forEach((col) => {
   };
 });
 
+//Realtime connection
+client.subscribe(`databases.${dbId}.collections.*.documents`, (response) => {
+  console.log("Real-time DB event received:", response);
 
-client.subscribe(`documents`, response => {
-  console.log('Real-time DB event received:', response);
+  const event = response.events.find(
+    (e) =>
+      e.includes(".create") || e.includes(".update") || e.includes(".delete"),
+  );
 
-  // Common payload (document data) — use to update IndexedDB
   const doc = response.payload;
 
+  if (event?.includes(".create")) {
+    console.log("New document created:", doc);
+    // store new data in IndexedDB
+  } else if (event?.includes(".update")) {
+    console.log("Document updated:", doc);
+    //store updated data in IndexedDB
+  } else if (event?.includes(".delete")) {
+    console.log("Document deleted:", doc);
+    // remove document from indexedDB
+  }
 });
