@@ -13,6 +13,7 @@ const Events = memo(() => {
       Query.orderDesc("$createdAt"),
     ]);
     setEvents(eventResponse.documents);
+    console.log(eventResponse);
   };
 
   useEffect(() => {
