@@ -4,6 +4,7 @@ import { ID } from "appwrite";
 export const db = {};
 
 const dbId = import.meta.env.VITE_DATABASE_ID;
+
 const collections = [
   {
     dbId,
