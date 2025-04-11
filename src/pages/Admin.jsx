@@ -7,10 +7,14 @@ import { useUser } from "../context/User";
 const Admin = () => {
   const { currentUser, logout } = useUser();
 
-  const [hallOfFamers, setHallOfFamers] = useState(false);
-  const [executives, setExecutives] = useState(false);
-  const [events, setEvents] = useState(true);
+  const tabs = [
+    { name: "Events", component: <EventSection /> },
+    { name: "Executives", component: <ExecutivesSection /> },
+    { name: "Hall Of Fame", component: <HallOfFame /> },
+  ];
 
+  const [activeTab, setActiveTab] = useState(tabs[0].name);
+  
   return (
     <div className="min-h-screen bg-gray-200">
       <header className="flex items-center justify-between bg-gray-800 px-10 py-4 shadow-md">
@@ -29,41 +33,18 @@ const Admin = () => {
       </header>
       <main className="mx-auto mt-6 px-10">
         <nav className="flex gap-10 border-b border-gray-300 pb-2">
-          <div
-            onClick={() => {
-              setEvents(true);
-              setExecutives(false);
-              setHallOfFamers(false);
-            }}
-            className={`${events ? "activeAdminSection" : "inActiveAdminSecion"}`}
-          >
-            Events
-          </div>
-          <div
-            onClick={() => {
-              setEvents(false);
-              setExecutives(true);
-              setHallOfFamers(false);
-            }}
-            className={`${executives ? "activeAdminSection" : "inActiveAdminSecion"}`}
-          >
-            Executives
-          </div>
-          <div
-            onClick={() => {
-              setEvents(false);
-              setExecutives(false);
-              setHallOfFamers(true);
-            }}
-            className={`${hallOfFamers ? "activeAdminSection" : "inActiveAdminSecion"}`}
-          >
-            Hall Of Fame
-          </div>
+          {tabs.map((tab, index) => (
+            <div
+              onClick={ () => setActiveTab(tab.name) }
+              key={index} 
+              className={`${activeTab === tab.name ? "activeAdminSection" : "inActiveAdminSecion"}`}
+            >
+              {tab.name}
+            </div>
+          ))}
         </nav>
         <section className="mt-6 rounded-lg bg-white p-6 shadow-md">
-          {events && <EventSection />}
-          {executives && <ExecutivesSection />}
-          {hallOfFamers && <HallOfFame />}
+          {tabs.find(tab => tab.name === activeTab).component}
         </section>
       </main>
     </div>
