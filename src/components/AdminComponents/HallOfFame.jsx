@@ -5,6 +5,8 @@ import Loader from "../Loader";
 import ErrorContainer from "../ErrorContainer";
 import { addImage, deleteImageFile } from "../reusable";
 import { textReducer } from "../textReducer";
+import { cacheDb, transformHallOfFame } from "../../dexie/db";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const HallOfFame = () => {
   // EXECUTIVES COMPONENT STATES
@@ -19,8 +21,95 @@ const HallOfFame = () => {
     bio: "",
   });
 
+  const result = useLiveQuery(() => cacheDb.hallOfFame.toArray(), []);
+
+
+  // DEXIE TESTING
+
+  const dummyHallOfFameData = [
+    {
+      name: "OBADIMEJI DAVID",
+      bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa asperiores sunt sapiente est, officia ea nemo fuga totam inventore voluptate esse necessitatibus provident placeat obcaecati, dolorum dolores rem quidem impedit soluta laborum saepe consequuntur ab. Repudiandae, dolor sunt. Obcaecati, doloremque vitae corporis est beatae repellat deserunt excepturi perferendis im",
+      image: "679a2a960020b02b1d10",
+      $id: "679a2bb00036ea0ed99c",
+      $createdAt: "2025-01-29T13:22:59.021+00:00",
+      $updatedAt: "2025-04-10T17:08:18.668+00:00",
+      $permissions: [],
+      $databaseId: "67810fa60021d2ae583b",
+      $collectionId: "678115440014e816c0fe",
+    },
+    {
+      name: "AJASA KEHINDE",
+      bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa asperiores sunt sapiente est, officia ea nemo fuga totam inventore voluptate esse necessitatibus provident placeat obcaecati, dolorum dolores rem quidem impedit soluta laborum saepe consequuntur ab. Repudiandae, dolor sunt. Obcaecati, doloremque vitae corporis est beatae repellat deserunt suscipit quasi excepturi perferendis impedit a",
+      image: "679a2a5400054a88264d",
+      $id: "679a3ade002869b59f09",
+      $createdAt: "2025-01-29T14:27:44.926+00:00",
+      $updatedAt: "2025-01-29T14:27:44.926+00:00",
+      $permissions: [],
+      $databaseId: "67810fa60021d2ae583b",
+      $collectionId: "678115440014e816c0fe",
+    },
+    {
+      name: "OGUNOWO ZAINAB",
+      bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa asperiores sunt sapiente est, officia ea nemo fuga totam inventore voluptate esse necessitatibus provident placeat obcaecati, dolorum dolores rem quidem impedit soluta laborum saepe consequuntur ab. Repudiandae, dolor sunt. Obcaecati, doloremque vitae corporis est beatae repellat deserunt suscipit quasi excepturi perferendis im",
+      image: "679a2abf0029e4fe3a94",
+      $id: "679a2bd100219fe7dd0c",
+      $createdAt: "2025-01-29T13:23:31.705+00:00",
+      $updatedAt: "2025-01-29T13:23:31.705+00:00",
+      $permissions: [],
+      $databaseId: "67810fa60021d2ae583b",
+      $collectionId: "678115440014e816c0fe",
+    },
+  ];
+
+  // const seedHallOfFame = async () => {
+  //   try {
+  //     const hallOfFamers = dummyHallOfFameData.map(transformHallOfFame);
+
+  //     // Insert the data into IndexedDB
+  //     await cacheDb.hallOfFame.bulkPut(hallOfFamers);
+
+  //     // After bulkPut completes, log something meaningful
+  //     console.log("Hall of Fame data seeded successfully!");
+  //   } catch (error) {
+  //     // Log any potential errors during the seeding process
+  //     console.error("Error seeding Hall of Fame data:", error);
+  //   }
+  // };
+
+  // // Call the function
+  // seedHallOfFame();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // EXECUTIVE COMPONENT REF
   const timeoutIdRef = useRef(null);
+
   const idOfHallOfFamerToUpdate = useRef(null);
 
   const handleFileChange = (e) => {
@@ -61,6 +150,7 @@ const HallOfFame = () => {
       Query.orderDesc("$updatedAt"),
     ]);
     setHall0fFamers(hallOfFamers.documents);
+
   };
 
   const addHallOfFamer = async (e) => {
