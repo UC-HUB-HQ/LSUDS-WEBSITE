@@ -1,4 +1,4 @@
-import { databases } from "./config";
+import { client, databases } from "./config";
 import { ID } from "appwrite";
 
 export const db = {};
@@ -12,7 +12,7 @@ const collections = [
   },
   {
     dbId,
-    id: import.meta.env.VITE_COLLECTION_ID_EXECUUTIVES,
+    id: import.meta.env.VITE_COLLECTION_ID_EXECUTIVES,
     name: "executives",
   },
   {
@@ -36,4 +36,27 @@ collections.forEach((col) => {
     //
     get: (id) => databases.getDocument(col.dbId, col.id, id),
   };
+});
+
+//Realtime connection
+client.subscribe(`databases.${dbId}.collections.*.documents`, (response) => {
+  console.log("Real-time DB event received:", response);
+
+  const event = response.events.find(
+    (e) =>
+      e.includes(".create") || e.includes(".update") || e.includes(".delete"),
+  );
+
+  const doc = response.payload;
+
+  if (event?.includes(".create")) {
+    console.log("New document created:", doc);
+    // store new data in IndexedDB
+  } else if (event?.includes(".update")) {
+    console.log("Document updated:", doc);
+    //store updated data in IndexedDB
+  } else if (event?.includes(".delete")) {
+    console.log("Document deleted:", doc);
+    // remove document from indexedDB
+  }
 });
