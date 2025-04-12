@@ -81,16 +81,16 @@ html{
 
 /* EVENT FORM */
 
-.eventsLabel{
+.formLabel{
     @apply mb-2 block text-sm font-bold text-gray-700
 }
 
-.eventInput{
-    @apply w-full appearance-none rounded border pl-3 leading-tight h-[60px] text-gray-700 shadow focus:outline-none
+.formInput{
+    @apply w-full appearance-none rounded pl-3 leading-tight h-[60px] text-gray-700 border border-gray-300 focus:outline-none
 }
 
-.eventTextarea{
-    @apply  w-full appearance-none rounded border px-3 py-2  h-[200px] leading-tight text-gray-700 shadow focus:outline-none
+.formTextarea{
+    @apply  w-full appearance-none rounded px-3 py-2  h-[200px] leading-tight text-gray-700 border border-gray-300 focus:outline-none
 }
 
 /* ADMIN SECTIONS */
@@ -100,4 +100,47 @@ html{
 
 .inActiveAdminSecion{
     @apply  cursor-pointer py-2 text-gray-600 hover:text-gray-800
+}
+
+.addBtn{
+    @apply rounded-3xl bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none
+}
+
+.emptyList{
+    @apply text-center text-2xl;
+}
+
+.closeFormBtn{
+    @apply rounded-3xl bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none;
+}
+
+i{
+    @apply cursor-pointer;
+}
+
+.tableContainer{
+    @apply overflow-x-auto p-4 mobile:p-0;
+}
+
+table{
+    @apply min-w-full border border-gray-200 bg-white tab:text-sm mobile:text-xs
+}
+
+.imgItem{
+    @apply h-[50px] w-[50px] rounded-full object-cover;
+}
+
+.adminForm{
+    @apply mx-auto w-[50%] flex-col gap-8 rounded bg-white px-8 py-12 shadow-md tab:w-[80%] mobile:w-[100%] mobile:px-0 mobile:shadow-none
+}
+
+.submitBtnContainer{
+    @apply flex items-center justify-between
+}
+.submitBtn{
+    @apply rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none disabled:bg-gray-400
+}
+
+.imageInputContainer{
+    @apply flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400
 }

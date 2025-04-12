@@ -5,7 +5,7 @@ import {
   FloatingCardSection,
   WelcomeContent,
   AboutSection,
-  Events,
+  EventsSection,
   ContactSection,
   Footer,
   
@@ -59,12 +59,15 @@ const Home = () => {
       <HeroSection OpenSideBar={openSideBar} />
       <FloatingCardSection />
       <WelcomeContent />
-      <Events />
+      <EventsSection />
       <AboutSection />
       <ContactSection />
       <Footer />
-      <button onClick={handleScrollUp} className={`${hidden ? "hidden" : "block"} fixed bottom-4 right-4 z-50 cursor-pointer p-3`}>
-        <i  className={`bi bi-arrow-up-circle-fill text-5xl text-softBlue`}></i>
+      <button
+        onClick={handleScrollUp}
+        className={`${hidden ? "hidden" : "block"} fixed bottom-4 right-4 z-50 cursor-pointer p-3`}
+      >
+        <i className={`bi bi-arrow-up-circle-fill text-5xl text-softBlue`}></i>
       </button>
     </>
   );

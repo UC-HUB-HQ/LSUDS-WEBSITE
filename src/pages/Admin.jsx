@@ -16,23 +16,23 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState(tabs[0].name);
   
   return (
-    <div className="min-h-screen bg-gray-200">
-      <header className="flex items-center justify-between bg-gray-800 px-10 py-4 shadow-md">
+    <div className="min-h-screen bg-gray-200 pb-2">
+      <header className="flex items-center justify-between bg-gray-800 px-10 py-6 shadow-md mobile:px-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-white mobile:text-sm">
             Welcome, {currentUser.name.split(" ")[0]}
           </h1>
         </div>
         <div
           onClick={logout}
-          className="flex cursor-pointer items-center gap-2 text-lg text-white hover:text-red-400"
+          className="flex cursor-pointer items-center gap-2 text-lg text-white hover:text-red-400 mobile:text-sm"
         >
           <i className="bi bi-box-arrow-right"></i>
           <p>Log Out</p>
         </div>
       </header>
-      <main className="mx-auto mt-6 px-10">
-        <nav className="flex gap-10 border-b border-gray-300 pb-2">
+      <main className="mx-auto pt-6 px-10 mobile:px-4">
+        <nav className="flex gap-10 border-b border-gray-300 pb-0 mobile:justify-between">
           {tabs.map((tab, index) => (
             <div
               onClick={ () => setActiveTab(tab.name) }
@@ -43,7 +43,7 @@ const Admin = () => {
             </div>
           ))}
         </nav>
-        <section className="mt-6 rounded-lg bg-white p-6 shadow-md">
+        <section className="mt-10 rounded-lg bg-white p-6 shadow-md mobile:p-4">
           {tabs.find(tab => tab.name === activeTab).component}
         </section>
       </main>

@@ -4,7 +4,7 @@ import { db } from "../appwrite/database";
 import { Query } from "appwrite";
 import { textReducer } from "./textReducer";
 
-const Events = memo(() => {
+const EventsSection = memo(() => {
   const [events, setEvents] = useState(null);
 
   const getLatestEvents = async () => {
@@ -13,7 +13,6 @@ const Events = memo(() => {
       Query.orderDesc("$createdAt"),
     ]);
     setEvents(eventResponse.documents);
-    console.log(eventResponse);
   };
 
   useEffect(() => {
@@ -58,4 +57,4 @@ const Events = memo(() => {
   );
 });
 
-export default Events;
+export default EventsSection;

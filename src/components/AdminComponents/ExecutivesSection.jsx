@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { db } from "../../appwrite/database";
 import { Query } from "appwrite";
-import Loader from "../Loader";
 import ErrorContainer from "../ErrorContainer";
 import { addImage, deleteImageFile } from "../reusable";
+import AdminHeader from "./AdminHeader";
+import SubmitButton from "./SubmitButton";
 
 
 
@@ -19,8 +20,12 @@ const ExecutivesSection = () => {
     executiveName: "",
     executivePosition: "",
   });
+
+  const formDisabled =
+    !Object.values(executiveForm).every((input) => input !== "") || loading;
   // EXECUTIVE COMPONENT REF
   const timeoutIdRef = useRef(null);
+
   const idOfExecutiveToUpdate = useRef(null)
 
   const resetFormInfo = () => {
@@ -30,6 +35,13 @@ const ExecutivesSection = () => {
     });
     setFileName(null);
   };
+
+
+  const closeAndResetForm = () => {
+    setIsExecutiveFormOpen(false);
+    setIsUpdateExecutives(false);
+    resetFormInfo();
+  }
 
   const handleEventFormChange = (e) => {
     setExecutiveForm((prevForm) => ({
@@ -177,84 +189,73 @@ const ExecutivesSection = () => {
 
   return (
     <>
-      <div className="mb-4 flex justify-end">
-        {!isExecutiveFormOpen ? (
-          <button
-            onClick={() => setIsExecutiveFormOpen(true)}
-            className="rounded-3xl bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
-          >
-            Add new Executive
-            <i className="bi bi-plus font-bold"></i>
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setIsExecutiveFormOpen(false);
-              setIsUpdateExecutives(false);
-              resetFormInfo();
-            }}
-            className="rounded-3xl bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            type="button"
-          >
-            <i className="bi bi-arrow-left mr-2"></i>
-            Go Back
-          </button>
-        )}
-      </div>
+      <AdminHeader
+        isFormOpen={isExecutiveFormOpen}
+        openForm={setIsExecutiveFormOpen}
+        resetForm={closeAndResetForm}
+        text={"Add new Executive"}
+      />
+
       <section
-        className={`overflow-x-auto p-4 ${isExecutiveFormOpen ? "hidden" : ""}`}
+        className={`tableContainer ${isExecutiveFormOpen ? "hidden" : ""}`}
       >
-        <table className="min-w-full border border-gray-200 bg-white tab:text-sm mobile:text-xs">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="tableItem">ID</th>
-              <th className="tableItem">Event Profile</th>
-              <th className="tableItem">Executive Name</th>
-              <th className="tableItem">Event Position</th>
-              <th className="tableItem">Update</th>
-              <th className="tableItem">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {executives?.map((executive, index) => (
-              <tr
-                key={executive.$id}
-                className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-              >
-                <td className="tableItem">{index + 1}</td>
-                <td className="tableItem">
-                  <img
-                    className="h-[50px] w-[50px] rounded-full object-cover"
-                    src={`https://cloud.appwrite.io/v1/storage/buckets/${import.meta.env.VITE_BUCKET_ID}/files/${executive.image}/view?project=${import.meta.env.VITE_PROJECT_ID}`}
-                    alt=""
-                  />
-                </td>
-                <td className="tableItem">{executive.name}</td>
-                <td className="tableItem">{executive.title}</td>
-                <td className="tableItem">
-                  <i
-                    onClick={setupExecutiveUpdate}
-                    data-id={executive.$id}
-                    className="bi bi-pen cursor-pointer text-softBlue"
-                  ></i>
-                </td>
-                <td className="tableItem">
-                  <i
-                    onClick={(e) => deleteExecutives(e, executive.$id)}
-                    data-id={executive.$id}
-                    className="bi bi-trash cursor-pointer text-red-500"
-                  ></i>
-                </td>
+        {executives?.length === 0 ? (
+          <div>
+            <h2 className="emptyList">NO EXECUTIVE</h2>
+          </div>
+        ) : (
+          <table>
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="tableItem">ID</th>
+                <th className="tableItem">Event Profile</th>
+                <th className="tableItem">Executive Name</th>
+                <th className="tableItem">Event Position</th>
+                <th className="tableItem">Update</th>
+                <th className="tableItem">Delete</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {executives?.map((executive, index) => (
+                <tr
+                  key={executive.$id}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                >
+                  <td className="tableItem">{index + 1}</td>
+                  <td className="tableItem">
+                    <img
+                      className="imgItem"
+                      src={`https://cloud.appwrite.io/v1/storage/buckets/${import.meta.env.VITE_BUCKET_ID}/files/${executive.image}/view?project=${import.meta.env.VITE_PROJECT_ID}`}
+                      alt=""
+                    />
+                  </td>
+                  <td className="tableItem">{executive.name}</td>
+                  <td className="tableItem">{executive.title}</td>
+                  <td className="tableItem">
+                    <i
+                      onClick={setupExecutiveUpdate}
+                      data-id={executive.$id}
+                      className="bi bi-pen text-softBlue"
+                    ></i>
+                  </td>
+                  <td className="tableItem">
+                    <i
+                      onClick={(e) => deleteExecutives(e, executive.$id)}
+                      data-id={executive.$id}
+                      className="bi bi-trash text-red-500"
+                    ></i>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </section>
       <form
         onSubmit={
           !isUpdateExecutives ? addExecutive : (e) => updateExecutives(e)
         }
-        className={`mx-auto flex w-[50%] flex-col gap-8 rounded bg-white px-8 py-12 shadow-md ${!isExecutiveFormOpen ? "hidden" : ""} tab:w-[80%] mobile:w-[95%]`}
+        className={`adminForm ${!isExecutiveFormOpen ? "hidden" : "flex"}`}
       >
         {errorMessage && (
           <ErrorContainer
@@ -263,13 +264,13 @@ const ExecutivesSection = () => {
           />
         )}
         <div>
-          <label className="eventsLabel" htmlFor="eventTitle">
+          <label className="formLabel" htmlFor="eventTitle">
             Executive Name
           </label>
           <input
             onChange={handleEventFormChange}
             name="executiveName"
-            className="eventInput"
+            className="formInput"
             id="executiveName"
             type="text"
             placeholder="Executive Name"
@@ -278,7 +279,7 @@ const ExecutivesSection = () => {
           />
         </div>
         <div>
-          <label className="eventsLabel" htmlFor="eventDate">
+          <label className="formLabel" htmlFor="eventDate">
             Executive Position
           </label>
           <input
@@ -286,7 +287,7 @@ const ExecutivesSection = () => {
             value={executiveForm.executivePosition}
             onChange={handleEventFormChange}
             name="executivePosition"
-            className="eventInput"
+            className="formInput"
             id="executivePosition"
             type="text"
             required
@@ -301,10 +302,7 @@ const ExecutivesSection = () => {
             accept=".jpg, .jpeg, .png"
             type="file"
           />
-          <label
-            className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400"
-            htmlFor="eventPhoto"
-          >
+          <label className="imageInputContainer" htmlFor="eventPhoto">
             <div className="flex flex-col items-center justify-center pb-6 pt-5">
               <div>
                 <i className="bi bi-upload"></i>
@@ -326,23 +324,13 @@ const ExecutivesSection = () => {
             </div>
           </label>
         </div>
-        <div className="flex items-center justify-between">
-          {!isUpdateExecutives ? (
-            <button
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-              type="submit"
-            >
-              {loading ? <Loader /> : "Add Executive"}
-            </button>
-          ) : (
-            <button
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-              type="submit"
-            >
-              {loading ? <Loader /> : "Update Executive"}
-            </button>
-          )}
-        </div>
+
+        <SubmitButton
+          formDisabled={formDisabled}
+          loading={loading}
+          isUpdate={isUpdateExecutives}
+          text={"Executive"}
+        />
       </form>
     </>
   );

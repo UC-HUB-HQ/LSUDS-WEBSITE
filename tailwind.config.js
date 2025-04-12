@@ -3,10 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
-      tab: { max: "800px" },
-      // => @media (max-width: 800px) { ... }
+      tab: { max: "1024px" },
+      // => @media (max-width: 1024px) { ... }
       mobile: { max: "600px" },
-      // => @media (max-width: 430px) { ... }
+      // => @media (max-width: 600px) { ... }
     },
     fontFamily: {
       Poppins: ["Poppins", "serif"],

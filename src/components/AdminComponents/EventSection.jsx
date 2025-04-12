@@ -4,8 +4,9 @@ import { textReducer } from "../textReducer";
 import { Query } from "appwrite";
 import { addImage } from "../reusable";
 import { deleteImageFile } from "../reusable";
-import Loader from "../Loader";
 import ErrorContainer from "../ErrorContainer";
+import AdminHeader from "./AdminHeader";
+import SubmitButton from "./SubmitButton";
 
 
 const EventSection = () => {
@@ -23,14 +24,17 @@ const EventSection = () => {
     eventId: "",
   })
 
+  const formDisabled =
+    !Object.values(eventForm).every((input) => input !== "") || loading;
+
   const timeoutIdRef = useRef(null)
+
   const idOfEventToUpdate = useRef(null);
 
   const handleEventFormChange = (e) => {
     const { name, value } = e.target;
     setEventForm({ ...eventForm, [name]: value })
   }
-
 
   // GET THE NAME  OF THE IMAGE ADMIN WANTS TO UPLOAD
   const handleFileChange = (event) => {
@@ -39,7 +43,6 @@ const EventSection = () => {
       setFileName(file.name);
     }
   };
-
 
   // GET ALL EVENTS FROM THE DATABASE AND SET THE ORDER ACCORIDING TO THE TIME THEY WERE UPDATED
   const init = async () => {
@@ -57,6 +60,12 @@ const EventSection = () => {
     setFileName(null);
   }
 
+  const closeAndResetForm = () => {
+    setIsEventFormOpen(false);
+    setIsUpdateEvent(false);
+    resetFormInfo();
+  }
+
   const clearErrorMsg = () => {
     // Clear the previous timeout if any, before setting a new one
     if (timeoutIdRef.current) {
@@ -68,7 +77,6 @@ const EventSection = () => {
       setErrorMessage(null);
     }, 3000);
   }
-
 
   const updateEvent = async (e) => {
     e.preventDefault();
@@ -123,7 +131,6 @@ const EventSection = () => {
     }
   }
 
-
   // SETUP UPDATE EVENT BY DISPLAYING EVENT FORM,  POPULATING INPUT FIELDS WITH THE RIGHT DATA.
   const setupEventUpdate = (e) => {
     setIsUpdateEvent(true);
@@ -137,7 +144,6 @@ const EventSection = () => {
     });
   };
 
-
   // DELETE EVENTS FROM DATABSE
   const deleteEvent = async (e) => {
     const deletedEventImageId = events.find(event => event.$id === e.target.dataset.id).image
@@ -147,7 +153,6 @@ const EventSection = () => {
       return prevEvents.filter((item) => item.$id !== e.target.dataset.id);
     });
   };
-
 
   // ADD NEW EVENTS
   const addEvent = async (e) => {
@@ -193,8 +198,6 @@ const EventSection = () => {
     }
   };
 
-
-
   useEffect(() => {
     // INIT FUNCTION TO GET ALL THE EVENTS FROM THE DB IMMEDIATELY THE COMPONENT MOUNTS
     init();
@@ -203,40 +206,20 @@ const EventSection = () => {
 
   return (
     <>
-      <div className="mb-4 flex justify-end">
-        {!isEventFormOpen ? (
-          <button
-            onClick={() => setIsEventFormOpen(true)}
-            className="rounded-3xl bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none"
-          >
-            Add new Event
-            <i className="bi bi-plus font-bold"></i>
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              setIsEventFormOpen(false);
-              setIsUpdateEvent(false);
-              resetFormInfo();
-            }}
-            className="rounded-3xl bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-            type="button"
-          >
-            <i className="bi bi-arrow-left mr-2"></i>
-            Go Back
-          </button>
-        )}
-      </div>
+      <AdminHeader
+        isFormOpen={isEventFormOpen}
+        openForm={setIsEventFormOpen}
+        resetForm={closeAndResetForm}
+        text={"Add new Event"}
+      />
 
-      <section
-        className={`overflow-x-auto p-4 ${isEventFormOpen ? "hidden" : ""}`}
-      >
+      <section className={`tableContainer ${isEventFormOpen ? "hidden" : ""}`}>
         {events?.length === 0 ? (
           <div>
-            <h2 className="text-center text-2xl">NO EVENT</h2>
+            <h2 className="emptyList">NO EVENT</h2>
           </div>
         ) : (
-          <table className="min-w-full border border-gray-200 bg-white tab:text-sm mobile:text-xs">
+          <table>
             <thead>
               <tr className="bg-gray-100">
                 <th className="tableItem">Event Id</th>
@@ -261,14 +244,14 @@ const EventSection = () => {
                     <i
                       onClick={setupEventUpdate}
                       data-id={event.$id}
-                      className="bi bi-pen cursor-pointer text-softBlue"
+                      className="bi bi-pen text-softBlue"
                     ></i>
                   </td>
                   <td className="tableItem text-center">
                     <i
                       onClick={deleteEvent}
                       data-id={event.$id}
-                      className="bi bi-trash cursor-pointer text-red-500"
+                      className="bi bi-trash text-red-500"
                     ></i>
                   </td>
                 </tr>
@@ -280,19 +263,22 @@ const EventSection = () => {
       {/* EVENT FORM SECTION*/}
       <form
         onSubmit={!isUpdateEvent ? addEvent : updateEvent}
-        className={`mx-auto flex w-[50%] flex-col gap-8 rounded bg-white px-8 py-12 shadow-md ${!isEventFormOpen ? "hidden" : ""} tab:w-[80%] mobile:w-[95%]`}
+        className={`adminForm ${!isEventFormOpen ? "hidden" : "flex"}`}
       >
         {errorMessage && (
-          <ErrorContainer errorMessage={errorMessage} clearErrorMessage={setErrorMessage} />
+          <ErrorContainer
+            errorMessage={errorMessage}
+            clearErrorMessage={setErrorMessage}
+          />
         )}
         <div>
-          <label className="eventsLabel" htmlFor="eventTitle">
+          <label className="formLabel" htmlFor="eventTitle">
             Event Title
           </label>
           <input
             onChange={handleEventFormChange}
             name="eventTitle"
-            className="eventInput"
+            className="formInput"
             id="eventTitle"
             type="text"
             placeholder="Event Title"
@@ -301,28 +287,28 @@ const EventSection = () => {
           />
         </div>
         <div>
-          <label className="eventsLabel" htmlFor="eventDate">
+          <label className="formLabel" htmlFor="eventDate">
             Event Date
           </label>
           <input
             value={eventForm.eventDate}
             onChange={handleEventFormChange}
             name="eventDate"
-            className="eventInput"
+            className="formInput"
             id="eventDate"
             type="date"
             required
           />
         </div>
         <div>
-          <label className="eventsLabel" htmlFor="eventDescription">
+          <label className="formLabel" htmlFor="eventDescription">
             Event Description
           </label>
           <textarea
             value={eventForm.eventDescription}
             onChange={handleEventFormChange}
             name="eventDescription"
-            className="eventTextarea"
+            className="formTextarea"
             id="eventDescription"
             placeholder="Event Description"
             required
@@ -362,23 +348,12 @@ const EventSection = () => {
             </div>
           </label>
         </div>
-        <div className="flex items-center justify-between">
-          {!isUpdateEvent ? (
-            <button
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-              type="submit"
-            >
-              {loading ? <Loader /> : "Add Event"}
-            </button>
-          ) : (
-            <button
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-              type="submit"
-            >
-              {loading ? <Loader /> : "Update Event"}
-            </button>
-          )}
-        </div>
+        <SubmitButton
+          formDisabled={formDisabled}
+          loading={loading}
+          isUpdate={isUpdateEvent}
+          text={"Event"}
+        />
       </form>
     </>
   );
