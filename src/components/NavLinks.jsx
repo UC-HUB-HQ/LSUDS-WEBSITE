@@ -5,7 +5,7 @@ const NavLinks = ({ isMobileNav, closeSideBar }) => {
   const { currentUser } = useUser();
 
   return (
-    <>
+    <nav>
       <ul
         className={isMobileNav ? `mobileNavLinkStyle` : `desktopNavLinksStyle`}
       >
@@ -51,7 +51,7 @@ const NavLinks = ({ isMobileNav, closeSideBar }) => {
           )}
         </li>
       </ul>
-    </>
+    </nav>
   );
 };
 

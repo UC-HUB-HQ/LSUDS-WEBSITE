@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   MobileSideBar,
+  NavBar,
   HeroSection,
   FloatingCardSection,
   WelcomeContent,
@@ -12,18 +13,9 @@ import {
 } from "../components";
 
 const Home = () => {
-  const [navBarOpen, setNavBarOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0)
   const [hidden, setHidden] = useState(true)
   const refScrollUp = useRef()
-
-  const openSideBar = () => {
-    setNavBarOpen(!navBarOpen);
-  };
-
-  const closeSideBar = () => {
-    setNavBarOpen(!navBarOpen);
-  };
 
   // check if this is the second reload after user has submitted details in the contact section
   const checkIfContactFormSubmitted = localStorage.getItem("contactFormSubmitted");
@@ -55,8 +47,7 @@ const Home = () => {
   return (
     <>
       <div ref={refScrollUp}> </div>
-      <MobileSideBar navBarOpen={navBarOpen} closeSideBar={closeSideBar} />
-      <HeroSection OpenSideBar={openSideBar} />
+      <HeroSection />
       <FloatingCardSection />
       <WelcomeContent />
       <EventsSection />

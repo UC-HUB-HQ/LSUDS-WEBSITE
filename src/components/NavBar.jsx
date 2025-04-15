@@ -4,7 +4,7 @@ import NavLinks from "./NavLinks";
 
 const NavBar = ({ OpenSideBar }) => {
   return (
-    <nav className="flex items-center justify-between py-3">
+    <header className="bg-[#00123f] flex items-center justify-between py-3 px-3">
       <div className="">
         <img
           className="h-[60px] w-[130px] cursor-pointer"
@@ -14,12 +14,15 @@ const NavBar = ({ OpenSideBar }) => {
       </div>
       <NavLinks />
       {/* mobile hamburger */}
-      <div onClick={OpenSideBar} className="hidden cursor-pointer flex-col gap-1 mobile:flex">
+      <div
+        onClick={OpenSideBar}
+        className="hidden cursor-pointer flex-col gap-1 mobile:flex"
+      >
         <span className="hamburger"></span>
         <span className="hamburger"></span>
         <span className="hamburger"></span>
       </div>
-    </nav>
+    </header>
   );
 };
 

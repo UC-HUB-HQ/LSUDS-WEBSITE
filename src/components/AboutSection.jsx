@@ -13,7 +13,7 @@ const AboutSection = () => {
         />
       </div>
       <div className="flex w-1/2 flex-col justify-start px-16 tab:px-1 tab:w-full">
-        <h1 className="mb-2 text-sm font-semibold text-customRed">About us</h1>
+        <h1 className="mb-2 text-lg font-semibold text-customRed">About us</h1>
         <h2 className="mb-6 text-3xl font-semibold tab:text-2xl">
           We are trendsetters in Public Speaking.
         </h2>

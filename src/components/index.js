@@ -5,4 +5,5 @@ export { default as WelcomeContent } from "./WelcomeContent";
 export { default as ContactSection } from "./ContactSection";
 export { default as Footer } from "./Footer";
 export { default as MobileSideBar } from "./MobileSideBar";
+export { default as NavBar } from "./NavBar";
 export { default as AboutSection } from "./AboutSection";
