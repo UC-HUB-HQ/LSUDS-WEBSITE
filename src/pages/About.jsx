@@ -4,9 +4,13 @@ import ExecutiveCard from "../components/ExecutiveCard";
 import { db } from "../appwrite/database";
 import { Query } from "appwrite";
 import { useEffect, useState } from "react";
+import ExecutiveCardSkeleton from "../components/ExecutiveCardSkeleton";
+import Skeleton from "react-loading-skeleton";
 
 const About = () => {
-  const [executives, setExecutives] = useState([])
+  const [executives, setExecutives] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const missionContent = [
     {
@@ -24,22 +28,30 @@ const About = () => {
   ];
 
   const getExecutives = async () => {
-      const executiveResponse = await db.executives.list([
-        Query.orderDesc("$updatedAt"),
-      ]);
+    const executiveResponse = await db.executives.list([
+      Query.orderDesc("$updatedAt"),
+    ]);
 
-      let executivesArray = executiveResponse.documents.reverse()
-      setExecutives(executivesArray);
-    };
+    let executivesArray = executiveResponse.documents.reverse();
+    setExecutives(executivesArray);
+  };
 
   useEffect(() => {
-    getExecutives()
-  }, [])
+    try {
+      setLoading(true);
+      getExecutives();
+    } catch (error) {
+      setError("Error fetching Executives");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <section>
       <AboutHeroSection />
-      <section className="pagePadding mb-4 flex flex-col pt-14 tab:items-center tab:text-center">
+      <section className="pagePadding container mb-4 flex flex-col pt-14 tab:items-center tab:text-center">
         <h2 className="mb-5 text-left text-4xl font-semibold">WHO ARE WE?</h2>
         <p className="mb-5 text-lg">
           The Lagos State University Debate Society (LSUDS) is the official
@@ -69,24 +81,33 @@ const About = () => {
           })}
         </div>
 
-        <h2 className="mb-5 mt-20 text-center text-[3.0em] font-semibold">
+        <h2 className="text-red-500 mb-5 mt-20 text-center text-[3.0em] tab:text-4xl font-semibold">
           MEET THE TEAM
         </h2>
-        <p className="mb-5 text-lg">
+        <p className="mb-12 text-lg">
           LSUDS is led by a vibrant team of passionate individuals who embody
           the spirit of service, innovation, and excellence. Our Executive Board
           and supporting committees ensure that the society runs smoothly,
           creatively, and inclusively.
         </p>
-        <h2 className="mb-5 text-center text-3xl font-semibold tab:text-center">
+        <h2 className="mb-5 text-center text-3xl tab:text-2xl font-semibold tab:text-center">
           LSUDS 8TH EXECUTIVE BOARD
         </h2>
-        <div className="flex flex-row items-start justify-center gap-5 mb-4 flex-wrap">
-          {
+        <div className="bg-white mb-4 flex flex-row flex-wrap items-start justify-between tab:justify-center px-5 gap-5">
+          {loading ? (
+            Array(3).fill(0).map((_, index) => <ExecutiveCardSkeleton key={index} />)
+          ) : (
             executives?.map((executive) => {
-              return <ExecutiveCard key={executive.$id} name={executive.name} post={executive.title} image_url={executive.image} />
+              return (
+                <ExecutiveCard
+                  key={executive.$id}
+                  name={executive.name}
+                  post={executive.title}
+                  image_url={executive.image}
+                />
+              );
             })
-          }
+          )}
         </div>
       </section>
     </section>
