@@ -1,15 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  MobileSideBar,
-  NavBar,
   HeroSection,
   FloatingCardSection,
   WelcomeContent,
   AboutSection,
   EventsSection,
   ContactSection,
-  Footer,
-  
 } from "../components";
 
 const Home = () => {
@@ -53,7 +49,6 @@ const Home = () => {
       <EventsSection />
       <AboutSection />
       <ContactSection />
-      <Footer />
       <button
         onClick={handleScrollUp}
         className={`${hidden ? "hidden" : "block"} fixed bottom-4 right-4 z-50 cursor-pointer p-3`}

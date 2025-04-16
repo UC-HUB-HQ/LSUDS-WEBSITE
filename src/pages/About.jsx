@@ -1,7 +1,13 @@
 import AboutHeroSection from "../components/AboutHeroSection";
 import AboutMissionCard from "../components/AboutMissionCard";
+import ExecutiveCard from "../components/ExecutiveCard";
+import { db } from "../appwrite/database";
+import { Query } from "appwrite";
+import { useEffect, useState } from "react";
 
 const About = () => {
+  const [executives, setExecutives] = useState([])
+
   const missionContent = [
     {
       number: 1,
@@ -17,12 +23,25 @@ const About = () => {
     },
   ];
 
+  const getExecutives = async () => {
+      const executiveResponse = await db.executives.list([
+        Query.orderDesc("$updatedAt"),
+      ]);
+
+      let executivesArray = executiveResponse.documents.reverse()
+      setExecutives(executivesArray);
+    };
+
+  useEffect(() => {
+    getExecutives()
+  }, [])
+
   return (
     <section>
       <AboutHeroSection />
-      <section className="mb-4 flex flex-col px-32 pt-14">
+      <section className="pagePadding mb-4 flex flex-col pt-14 tab:items-center tab:text-center">
         <h2 className="mb-5 text-left text-4xl font-semibold">WHO ARE WE?</h2>
-        <p className="mb-5 text-xl">
+        <p className="mb-5 text-lg">
           The Lagos State University Debate Society (LSUDS) is the official
           public speaking and leadership society of the Lagos State University.
           Founded with a commitment to fostering articulate thinkers and
@@ -37,8 +56,8 @@ const About = () => {
         </p>
 
         <h2 className="mb-5 text-left text-4xl font-semibold">OUR MISSION</h2>
-        <p className="mb-5 text-xl">Our mission is simple but powerful:</p>
-        <div className="flex w-full flex-row items-center tab:flex-col">
+        <p className="mb-5 text-lg">Our mission is simple but powerful:</p>
+        <div className="flex flex-row items-center justify-start gap-2 tab:flex-col">
           {missionContent.map((mission) => {
             return (
               <AboutMissionCard
@@ -50,16 +69,25 @@ const About = () => {
           })}
         </div>
 
-        <h2 className="mb-5 mt-20 text-center text-[3.5em] font-semibold">
+        <h2 className="mb-5 mt-20 text-center text-[3.0em] font-semibold">
           MEET THE TEAM
         </h2>
-        <p className="mb-5 text-xl">
+        <p className="mb-5 text-lg">
           LSUDS is led by a vibrant team of passionate individuals who embody
           the spirit of service, innovation, and excellence. Our Executive Board
           and supporting committees ensure that the society runs smoothly,
           creatively, and inclusively.
         </p>
-        <h2 className="mb-5 text-left text-3xl font-semibold">LSUDS 8TH EXECUTIVE BOARD</h2>
+        <h2 className="mb-5 text-center text-3xl font-semibold tab:text-center">
+          LSUDS 8TH EXECUTIVE BOARD
+        </h2>
+        <div className="flex flex-row items-start justify-center gap-5 mb-4 flex-wrap">
+          {
+            executives?.map((executive) => {
+              return <ExecutiveCard key={executive.$id} name={executive.name} post={executive.title} image_url={executive.image} />
+            })
+          }
+        </div>
       </section>
     </section>
   );

@@ -9,7 +9,7 @@ import {
 } from "./pages/index";
 import UserProvider from "./context/User";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { MobileSideBar, NavBar } from "./components";
+import { Footer, MobileSideBar, NavBar } from "./components";
 import { useState } from "react";
 
 function App() {
@@ -39,6 +39,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
         </Route>
       </Routes>
+      <Footer />
     </UserProvider>
   );
 }

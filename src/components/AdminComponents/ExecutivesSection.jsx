@@ -208,9 +208,9 @@ const ExecutivesSection = () => {
             <thead>
               <tr className="bg-gray-100">
                 <th className="tableItem">ID</th>
-                <th className="tableItem">Event Profile</th>
+                <th className="tableItem">Image</th>
                 <th className="tableItem">Executive Name</th>
-                <th className="tableItem">Event Position</th>
+                <th className="tableItem">Position</th>
                 <th className="tableItem">Update</th>
                 <th className="tableItem">Delete</th>
               </tr>

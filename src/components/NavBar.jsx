@@ -4,13 +4,15 @@ import NavLinks from "./NavLinks";
 
 const NavBar = ({ OpenSideBar }) => {
   return (
-    <header className="bg-[#00123f] flex items-center justify-between py-3 px-3">
+    <header className="flex items-center justify-between bg-[#00123f] px-3 py-3">
       <div className="">
-        <img
-          className="h-[60px] w-[130px] cursor-pointer"
-          src={logo}
-          alt="LSUDS LOGO"
-        />
+        <Link to={'/'}>
+          <img
+            className="h-[60px] w-[130px] cursor-pointer"
+            src={logo}
+            alt="LSUDS LOGO"
+          />
+        </Link>
       </div>
       <NavLinks />
       {/* mobile hamburger */}
