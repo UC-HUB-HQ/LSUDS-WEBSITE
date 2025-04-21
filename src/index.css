@@ -34,7 +34,7 @@ html{
 }
 
 .desktopNavLinksStyle{
-    @apply flex items-center justify-between gap-4 font-semibold text-white mobile:hidden
+    @apply flex items-center justify-between gap-4 font-semibold text-black mobile:hidden
 }
 
 .mobileNavLinkStyle{

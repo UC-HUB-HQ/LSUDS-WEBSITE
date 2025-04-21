@@ -4,7 +4,7 @@ import NavLinks from "./NavLinks";
 
 const NavBar = ({ OpenSideBar }) => {
   return (
-    <header className="flex items-center justify-between bg-[#00123f] px-3 py-3">
+    <header className="flex items-center justify-between bg-white px-3 py-3">
       <div className="">
         <Link to={'/'}>
           <img

@@ -69,7 +69,7 @@ const About = () => {
 
         <h2 className="mb-5 text-left text-4xl font-semibold">OUR MISSION</h2>
         <p className="mb-5 text-lg">Our mission is simple but powerful:</p>
-        <div className="flex flex-row items-center justify-start gap-2 tab:flex-col">
+        <div className="flex flex-row items-center justify-between tab:justify-start px-5 gap-2 tab:flex-col">
           {missionContent.map((mission) => {
             return (
               <AboutMissionCard

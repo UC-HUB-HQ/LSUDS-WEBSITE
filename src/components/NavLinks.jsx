@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import { useUser } from "../context/User";
 
 const NavLinks = ({ isMobileNav, closeSideBar }) => {
   const { currentUser } = useUser();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
     <nav>
@@ -39,17 +41,19 @@ const NavLinks = ({ isMobileNav, closeSideBar }) => {
             Contact Us
           </a>
         </li>
-        <li>
-          {currentUser ? (
-            <Link onClick={closeSideBar} to="/admin">
-              Admin
-            </Link>
-          ) : (
-            <Link onClick={closeSideBar} to="/signin">
-              Sign In
-            </Link>
-          )}
-        </li>
+        {pathname !== "/admin" && (
+          <li>
+            {currentUser ? (
+              <Link onClick={closeSideBar} to="/admin">
+                Admin
+              </Link>
+            ) : (
+              <Link onClick={closeSideBar} to="/signin">
+                Sign In
+              </Link>
+            )}
+          </li>
+        )}
       </ul>
     </nav>
   );
