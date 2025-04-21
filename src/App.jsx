@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import {
   Home,
   About,
@@ -14,6 +14,8 @@ import { useState } from "react";
 
 function App() {
   const [navBarOpen, setNavBarOpen] = useState(false);
+  const location = useLocation()
+  const pathname = location.pathname
 
   const openSideBar = () => {
     setNavBarOpen(!navBarOpen);
@@ -26,7 +28,7 @@ function App() {
   return (
     <UserProvider>
       <MobileSideBar navBarOpen={navBarOpen} closeSideBar={closeSideBar} />
-      <NavBar OpenSideBar={openSideBar} />
+      {pathname !== "/admin" && <NavBar OpenSideBar={openSideBar} />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

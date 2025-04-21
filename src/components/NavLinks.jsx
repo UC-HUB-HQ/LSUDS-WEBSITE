@@ -12,19 +12,31 @@ const NavLinks = ({ isMobileNav, closeSideBar }) => {
         className={isMobileNav ? `mobileNavLinkStyle` : `desktopNavLinksStyle`}
       >
         <li>
-          <Link onClick={closeSideBar} className="text-softBlue" to="/">
+          <Link
+            onClick={closeSideBar}
+            className={`${pathname === "/" ? "text-softBlue" : "text-black"}`}
+            to="/"
+          >
             Home
           </Link>
         </li>
         <li>
-          <a onClick={closeSideBar} href="#events">
+          <Link
+            onClick={closeSideBar}
+            className={`${pathname === "/events" ? "text-softBlue" : "text-black"}`}
+            to={"/events"}
+          >
             Events
-          </a>
+          </Link>
         </li>
         <li>
-          <a onClick={closeSideBar} href="#about">
+          <Link
+            onClick={closeSideBar}
+            className={`${pathname === "/about" ? "text-softBlue" : "text-black"}`}
+            to={"/about"}
+          >
             About Us
-          </a>
+          </Link>
         </li>
         <li>
           <a
@@ -37,9 +49,9 @@ const NavLinks = ({ isMobileNav, closeSideBar }) => {
           </a>
         </li>
         <li>
-          <a onClick={closeSideBar} href="#contact">
+          <Link onClick={closeSideBar} to={"/#contact"}>
             Contact Us
-          </a>
+          </Link>
         </li>
         {pathname !== "/admin" && (
           <li>
