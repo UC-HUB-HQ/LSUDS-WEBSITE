@@ -11,6 +11,7 @@ import UserProvider from "./context/User";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Footer, MobileSideBar, NavBar } from "./components";
 import { useState } from "react";
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   const [navBarOpen, setNavBarOpen] = useState(false);
