@@ -94,7 +94,7 @@ const Events = () => {
         </div>
       </section>
       {/* Events Filter Section */}
-      <section className="bg-gray-50 py-12">
+      <section className="bg-gray-50 py-12 pagePadding">
         <div className="container mx-auto px-4">
           <div className="md:flex-row mb-8 flex flex-col items-center justify-between">
             <h2 className="md:mb-0 mb-4 text-3xl font-bold text-red-600">
@@ -132,7 +132,7 @@ const Events = () => {
             </div>
           </div>
           {/* Events Grid */}
-          <div className="md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 gap-8">
+          <div className="tab:grid-cols-2 grid-cols-3 grid mobile:grid-cols-1 gap-8">
             {filteredEvents.map((event) => (
               <div
                 key={event.id}
@@ -181,11 +181,11 @@ const Events = () => {
         </div>
       </section>
       {/* Past Events Section */}
-      <section className="py-16">
+      <section className="py-16 pagePadding">
         <div className="container mx-auto px-4">
           <h2 className="mb-8 text-3xl font-bold">Past Events</h2>
           <div className="space-y-8">
-            <div className="md:flex-row flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
+            <div className="flex-row flex tab:flex-col overflow-hidden rounded-lg bg-white shadow-md">
               <div className="md:w-1/3 w-full">
                 <img
                   src="https://images.unsplash.com/photo-1557426272-fc759fdf7a8d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
@@ -221,7 +221,7 @@ const Events = () => {
                 </button>
               </div>
             </div>
-            <div className="md:flex-row flex flex-col overflow-hidden rounded-lg bg-white shadow-md">
+            <div className="flex-row flex tab:flex-col overflow-hidden rounded-lg bg-white shadow-md">
               <div className="md:w-1/3 w-full">
                 <img
                   src="https://images.unsplash.com/photo-1560439514-4e9645039924?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80"
@@ -265,7 +265,7 @@ const Events = () => {
         </div>
       </section>
       {/* Calendar Section */}
-      <section className="bg-gray-50 py-16">
+      <section className="bg-gray-50 py-16 pagePadding">
         <div className="container mx-auto px-4 text-center">
           <h2 className="mb-6 text-3xl font-bold">Event Calendar</h2>
           <p className="mx-auto mb-8 max-w-2xl text-gray-700">

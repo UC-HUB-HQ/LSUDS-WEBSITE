@@ -3,7 +3,6 @@ import {
   Home,
   About,
   Events,
-  HallOfFamers,
   Admin,
   SignIn,
 } from "./pages/index";
@@ -11,7 +10,7 @@ import UserProvider from "./context/User";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Footer, MobileSideBar, NavBar } from "./components";
 import { useState } from "react";
-import AboutUs from "./pages/AboutUs";
+import HallOfFamers from "./pages/HallOfFamers";
 
 function App() {
   const [navBarOpen, setNavBarOpen] = useState(false);
